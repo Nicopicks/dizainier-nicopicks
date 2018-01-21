@@ -23,11 +23,37 @@ class ViewController: UIViewController {
         
         // Do any additional setup after loading the view, typically from a nib.
     }
+    
+    func creerText(_ chiffre1: Int, _ chiffre2: Int){
+        numberLabel.text = "\((chiffre1))" + "\(chiffre2)"
+        guard let chiffreString: String = numberLabel.text else {return}
+        guard let chiffreInt = Int(chiffreString) else {return}
+        stepper.value = Double(chiffreInt)
+        chiffreDizaine.selectedSegmentIndex = (chiffreInt / 10)
+        chiffreUnite.selectedSegmentIndex = (chiffreInt % 10)
+        slider.value = Float(chiffreInt)
+        color42()
+        guard geekMode else {return}
+        let chiffreHex = String(chiffreInt, radix: 16)
+        numberLabel.text = "\(chiffreHex)"
+        color42()
+        
+    }
+    
+    func color42(){
+        if chiffreUnite.selectedSegmentIndex == 2 && chiffreDizaine.selectedSegmentIndex == 4 {
+            numberLabel.textColor = #colorLiteral(red: 0.4392156899, green: 0.01176470611, blue: 0.1921568662, alpha: 1)
+        }else {
+            numberLabel.textColor = UIColor.black
+        }
+    }
+    
     @IBAction func actionSlider(_ sender: UISlider) {
         let chiffre1 = (Int(sender.value)) / 10
         let chiffre2 = (Int(sender.value)) % 10
         creerText(chiffre1, chiffre2)
     }
+    
     @IBAction func dizaineAction(_ sender: UISegmentedControl) {
         finChiffre = sender.selectedSegmentIndex
         creerText(debutChiffre, finChiffre)
@@ -38,19 +64,6 @@ class ViewController: UIViewController {
         
     }
     
-    func creerText(_ chiffre1: Int, _ chiffre2: Int){
-        numberLabel.text = "\((chiffre1))" + "\(chiffre2)"
-        stepper.value = Double(numberLabel.text!)!
-        chiffreDizaine.selectedSegmentIndex = (Int(numberLabel.text!)! / 10)
-        chiffreUnite.selectedSegmentIndex = (Int(numberLabel.text!)! % 10)
-        slider.value = Float(numberLabel.text!)!
-        color42()
-        guard geekMode else {return}
-        let chiffre = String(Int(numberLabel.text!)!, radix: 16)
-        numberLabel.text = "\(chiffre)"
-        color42()
-        
-    }
     @IBAction func geekMode(_ sender: UISwitch) {
         guard sender.isOn else {
             geekMode = false
@@ -68,12 +81,6 @@ class ViewController: UIViewController {
     @IBAction func raz(_ sender: UIButton) {
         creerText(5, 0)
     }
-    func color42(){
-        if Int(numberLabel.text!) == 42 {
-            numberLabel.textColor = #colorLiteral(red: 0.4392156899, green: 0.01176470611, blue: 0.1921568662, alpha: 1)
-        }else {
-            numberLabel.textColor = UIColor.black
-        }
-    }
+    
 }
 
